@@ -3,6 +3,9 @@
 [![CI](https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/actions/workflows/ci.yml/badge.svg)](https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Gopeed Extension](https://img.shields.io/badge/Gopeed-extension-2bb673.svg)](https://gopeed.com/docs/dev-extension)
+[![Gopeed Store](https://img.shields.io/badge/Gopeed-store-2bb673.svg)](https://gopeed.com/store)
+[![On the Store](https://img.shields.io/badge/store-folder--downloader-2bb673.svg)](https://gopeed.com/store/sidhanthapoddar99@folder-downloader)
+
 
 A [Gopeed](https://gopeed.com) extension that turns a single **directory URL** into
 a whole-folder download — recursively, with the folder structure preserved.
