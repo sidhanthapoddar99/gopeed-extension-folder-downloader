@@ -1,0 +1,50 @@
+name: Bug report
+description: Something didn't resolve or download correctly
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect, and what actually happened?
+    validations:
+      required: true
+  - type: input
+    id: url-shape
+    attributes:
+      label: Directory URL shape
+      description: The URL pattern (redact host/credentials), e.g. `https://host/path/`
+      placeholder: https://example.com/some/folder/
+    validations:
+      required: true
+  - type: dropdown
+    id: server
+    attributes:
+      label: Listing type
+      options:
+        - nginx autoindex
+        - Apache mod_autoindex
+        - Caddy
+        - Python http.server
+        - lighttpd
+        - JSON API
+        - Other / unknown
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Listing sample
+      description: A snippet of the directory HTML or JSON (redact anything sensitive). This is the single most useful thing for fixing parser issues.
+      render: html
+  - type: input
+    id: version
+    attributes:
+      label: Extension & Gopeed version
+      placeholder: extension 1.0.0, Gopeed 1.x
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant Gopeed logs (the extension logs lines prefixed `[folder-downloader]`). Redact credentials.
+      render: shell

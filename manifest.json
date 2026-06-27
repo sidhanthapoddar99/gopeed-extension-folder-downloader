@@ -1,0 +1,60 @@
+{
+  "name": "folder-downloader",
+  "author": "sidhanthapoddar99",
+  "title": "Folder Downloader",
+  "description": "Recursively resolve an HTTP directory listing (nginx/Apache/Caddy autoindex or a JSON listing) into a folder resource so Gopeed can download a whole folder tree at once, preserving its structure.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader",
+  "repository": {
+    "url": "https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader"
+  },
+  "scripts": [
+    {
+      "event": "onResolve",
+      "match": {
+        "urls": [
+          "*://*/",
+          "*://*/*/"
+        ]
+      },
+      "entry": "dist/index.js"
+    }
+  ],
+  "settings": [
+    {
+      "name": "userAgent",
+      "title": "User-Agent",
+      "description": "User-Agent header used when crawling the listing and downloading files.",
+      "type": "string",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+      "name": "maxDepth",
+      "title": "Max recursion depth",
+      "description": "How many sub-folder levels to descend into. 0 = only the root folder.",
+      "type": "number",
+      "value": 50
+    },
+    {
+      "name": "concurrency",
+      "title": "Concurrent listing requests",
+      "description": "How many directory pages to fetch in parallel while crawling.",
+      "type": "number",
+      "value": 5
+    },
+    {
+      "name": "maxFiles",
+      "title": "Max files",
+      "description": "Safety cap on the total number of files resolved from one folder.",
+      "type": "number",
+      "value": 5000
+    },
+    {
+      "name": "headers",
+      "title": "Extra request headers",
+      "description": "Optional extra headers, one per line as 'Name: Value' (e.g. a Cookie or Authorization header).",
+      "type": "string",
+      "value": ""
+    }
+  ]
+}

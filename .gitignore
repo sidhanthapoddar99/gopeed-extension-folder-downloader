@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.DS_Store
+.idea/
+.vscode/
+
+# Build artifact is committed (the manifest `entry` points at it). Run
+# `bun run build` to regenerate. Uncomment to keep it out of source control:
+# dist/
