@@ -3,7 +3,8 @@
   "author": "sidhanthapoddar99",
   "title": "Folder Downloader",
   "description": "Recursively resolve an HTTP directory listing (nginx/Apache/Caddy autoindex or a JSON listing) into a folder resource so Gopeed can download a whole folder tree at once, preserving its structure.",
-  "version": "1.0.0",
+  "icon": "icon.png",
+  "version": "1.0.1",
   "homepage": "https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader",
   "repository": {
     "url": "https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader"
