@@ -42,6 +42,11 @@ downloading — it calls Gopeed's REST API:
   the new/changed files — incremental mirroring of a remote folder.
 - **Structure preserved.** Same `<dir>/<folder>/<subdir>/<file>` layout as the
   extension.
+- **Custom folder naming / rename.** Override the top-level folder name per source
+  (e.g. `Life.Of.Pi.3D.2012...` → `life_of_pi`). The companion builds the task
+  paths itself, so it can rename freely — unlike the extension, where Gopeed's
+  "Rename" field is ignored for extension resolve results and the folder is fixed
+  to the resolved name.
 - **Multi-source dashboard.** See all saved sources, their last sync, and what's
   pending vs done.
 
