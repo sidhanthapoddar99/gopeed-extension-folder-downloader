@@ -59,6 +59,29 @@ with `bun` (bun runs the TS directly; its `fetch` exercises the real code path).
 Confirmed working against an nginx/nginxy seedbox listing (recursion, basic-auth,
 size parsing, structure-preserving paths).
 
+## Distribution, versioning & publishing (intentional — keep it published)
+
+This is a **published, public open-source extension**, not a local-only build. We
+distribute it on git and want it discoverable in the Gopeed store. Maintain it
+accordingly:
+
+- **Repo:** https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader
+  (public, branch `main`). Users install via this URL in Gopeed; Gopeed auto-updates
+  from `main` using the manifest `version`.
+- **Store discoverability is a goal.** Keep the `gopeed-extension-` repo-name prefix
+  and the GitHub topics (`gopeed-extension`, `gopeed`, …). Keep `repository.url`,
+  `author`, `name`, `title`, `description` populated in `manifest.json`; the
+  `author@name` identity (`sidhanthapoddar99@folder-downloader`) must stay unique.
+- **Release flow (do this for every change worth shipping):**
+  1. Bump `version` in **both** `manifest.json` and `package.json` (SemVer).
+  2. Add a `CHANGELOG.md` entry.
+  3. `bun run build` and **commit `dist/index.js`** (CI fails if it's stale).
+  4. Push to `main` → installed users get the update.
+  5. Tag a release: `git tag vX.Y.Z && git push origin vX.Y.Z` then
+     `gh release create vX.Y.Z --notes-from-tag`.
+- The manifest `version` is the update signal — bumping it is what triggers
+  Gopeed's "update available". Never ship a code change without bumping it.
+
 ## Caveats / known limits
 
 - Source must be a **browsable** listing (autoindex HTML or JSON index).
