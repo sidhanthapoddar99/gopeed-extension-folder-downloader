@@ -76,8 +76,8 @@ Click **Download** — files are saved preserving the folder structure.
             
 > **📁 Where your files land.**
 >- Files are saved under **`<Download Directory>/<folder name>/…`**, 
->- mirroring the  listing's structure. With a Download Directory of `/app/Downloads` 
->- and the`Sample-Media-Pack/` folder above, `Extras/trailer.mp4` lands at `/app/Downloads/Sample-Media-Pack/Extras/trailer.mp4`.
+>- mirroring the  listing's structure. With a Download Directory of `/app/Downloads` and the`Sample-Media-Pack/` folder above,
+>- `Extras/trailer.mp4` lands at `/app/Downloads/Sample-Media-Pack/Extras/trailer.mp4`.
 
 ### Authentication
 
