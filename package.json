@@ -1,6 +1,6 @@
 {
   "name": "gopeed-folder-downloader",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "Gopeed extension that resolves an HTTP directory listing into a folder resource so a whole folder tree can be downloaded at once, structure preserved.",
   "type": "module",

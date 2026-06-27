@@ -22,6 +22,8 @@ import {
 
 interface Config {
   userAgent?: string;
+  username?: string;
+  password?: string;
   maxDepth: number;
   concurrency: number;
   maxFiles: number;
@@ -35,8 +37,11 @@ function num(value: unknown, fallback: number): number {
 
 function readConfig(): Config {
   const s = gopeed.settings as Record<string, unknown>;
+  const str = (v: unknown) => (typeof v === 'string' && v ? v : undefined);
   return {
-    userAgent: typeof s.userAgent === 'string' && s.userAgent ? s.userAgent : undefined,
+    userAgent: str(s.userAgent),
+    username: str(s.username),
+    password: str(s.password),
     maxDepth: num(s.maxDepth, 50),
     concurrency: Math.max(1, num(s.concurrency, 5)),
     maxFiles: Math.max(1, num(s.maxFiles, 5000)),
@@ -60,7 +65,12 @@ gopeed.events.onResolve(async (ctx) => {
   const root = ensureTrailingSlash(url);
 
   const cfg = readConfig();
-  const { clean, username, password } = splitCredentials(root);
+  // Credentials embedded in the URL win; otherwise fall back to the
+  // Username/Password configured on the extension's settings page.
+  const fromUrl = splitCredentials(root);
+  const clean = fromUrl.clean;
+  const username = fromUrl.username || cfg.username || '';
+  const password = fromUrl.password || cfg.password || '';
   const headers = buildHeaders({
     userAgent: cfg.userAgent,
     username,
