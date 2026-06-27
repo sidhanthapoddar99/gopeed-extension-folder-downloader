@@ -56,10 +56,11 @@ folder; a URL without one downloads normally). Set the **Download Directory** as
 usual, then click **Confirm**.
 
 > **💡 Tip — resolve, don't "download directly."**
-> Let Gopeed **resolve** the link; don't choose **"Download directly"**. Direct
-> download saves the listing *page itself* as a single HTML file. The extension
-> only turns the URL into a folder tree on the **resolve** step (and only for
-> URLs ending in `/`).
+>- Let Gopeed **resolve** the link; don't choose **"Download directly"**.
+>- Direct download saves the listing *page itself* as a single HTML file. 
+>- The extension only turns the URL into a folder tree on the **resolve** step (and only for URLs ending in `/`).
+
+<br>
 
 <img src="docs/screenshots/create-task.png" width="760" alt="Create Task dialog with a directory URL pasted into Download Link">
 
@@ -71,11 +72,12 @@ Click **Download** — files are saved preserving the folder structure.
 
 <img src="docs/screenshots/select-files.png" width="760" alt="File selection tree showing nested folders, sizes, and checkboxes">
 
+<br>
+            
 > **📁 Where your files land.**
-> Files are saved under **`<Download Directory>/<folder name>/…`**, mirroring the
-> listing's structure. With a Download Directory of `/app/Downloads` and the
-> `Sample-Media-Pack/` folder above, `Extras/trailer.mp4` lands at
-> `/app/Downloads/Sample-Media-Pack/Extras/trailer.mp4`.
+>- Files are saved under **`<Download Directory>/<folder name>/…`**, 
+>- mirroring the  listing's structure. With a Download Directory of `/app/Downloads` 
+>- and the`Sample-Media-Pack/` folder above, `Extras/trailer.mp4` lands at `/app/Downloads/Sample-Media-Pack/Extras/trailer.mp4`.
 
 ### Authentication
 
