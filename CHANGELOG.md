@@ -4,6 +4,30 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-06-27
+
+### Changed
+
+- **Credentials now come from the URL** (`https://user:pass@host/dir/`), per
+  source. Removed the global Username/Password settings added in 1.0.3 — a single
+  global login doesn't fit downloading from multiple authenticated sources.
+
+### Added
+
+- **Clear "authentication required" message.** A 401/403 on the root now returns
+  an actionable error telling you to put credentials in the URL, instead of
+  silently resolving nothing.
+
+### Fixed
+
+- Download URLs no longer contain a stray `:@` (`https://:@host/...`); credentials
+  are cleanly removed from stored URLs and sent via the `Authorization` header.
+
+### Docs
+
+- Removed the grey-out / skip-existing discussion from the extension; those
+  persistent features are captured in `COMPANION.md` for a planned companion app.
+
 ## [1.0.3] - 2026-06-27
 
 ### Added
@@ -52,6 +76,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   extra request headers.
 - Unit tests (`bun test`) for parsers, the tree builder and URL helpers.
 
+[1.0.4]: https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/releases/tag/v1.0.4
 [1.0.3]: https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/releases/tag/v1.0.3
 [1.0.2]: https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/releases/tag/v1.0.2
 [1.0.1]: https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/releases/tag/v1.0.1

@@ -15,14 +15,22 @@ export interface SplitCreds {
   password: string;
 }
 
+/**
+ * Rebuild a URL string without any userinfo. We don't rely on setting
+ * `u.username`/`u.password = ''` because Gopeed's URL polyfill leaves a stray
+ * `:@` behind (producing `https://:@host/...`), so we reconstruct from parts.
+ */
+function stripUserinfo(u: URL): string {
+  const port = u.port ? ':' + u.port : '';
+  return u.protocol + '//' + u.hostname + port + u.pathname + u.search + u.hash;
+}
+
 /** Split userinfo out of a URL. Returns the credential-free URL + the creds. */
 export function splitCredentials(url: string): SplitCreds {
   const u = new URL(url);
   const username = decodeURIComponent(u.username);
   const password = decodeURIComponent(u.password);
-  u.username = '';
-  u.password = '';
-  return { clean: u.href, username, password };
+  return { clean: stripUserinfo(u), username, password };
 }
 
 /** Ensure a directory URL ends with a single trailing slash. */
@@ -39,10 +47,7 @@ export function ensureTrailingSlash(url: string): string {
  * return a credential-free absolute URL.
  */
 export function resolveUrl(base: string, href: string): string {
-  const u = new URL(href, base);
-  u.username = '';
-  u.password = '';
-  return u.href;
+  return stripUserinfo(new URL(href, base));
 }
 
 /**

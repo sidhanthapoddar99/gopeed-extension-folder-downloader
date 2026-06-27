@@ -5,7 +5,7 @@
  * with bounded concurrency. Guards against cycles (visited set), runaway depth
  * (maxDepth), runaway size (maxFiles) and escaping the root subtree (isWithin).
  */
-import { ListingEntry, fetchListing } from './listing';
+import { ListingEntry, fetchListing, isAuthError } from './listing';
 import { ensureTrailingSlash, isWithin } from './url';
 
 export interface CrawlOptions {
@@ -54,6 +54,9 @@ export async function crawl(rootUrl: string, opts: CrawlOptions): Promise<Listin
       try {
         listing = await fetcher(dir.url, opts.headers);
       } catch (e) {
+        // An auth failure on the root means the whole resource needs credentials
+        // — surface it instead of silently producing an empty result.
+        if (isAuthError(e) && dir.depth === 0) throw e;
         opts.log?.(`failed to read ${redact(dir.url)}: ${String(e)}`);
         return;
       }

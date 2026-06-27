@@ -8,6 +8,24 @@ import { parseJsonListing } from './json-listing';
 
 export * from './types';
 
+/**
+ * Thrown when a listing request is rejected for authentication reasons
+ * (HTTP 401/403). Uses a tagged property rather than `instanceof` so detection
+ * survives the ES5 transpile of `extends Error`.
+ */
+export class AuthError extends Error {
+  readonly __auth = true;
+  readonly status: number;
+  constructor(status: number) {
+    super(`authentication required (HTTP ${status})`);
+    this.status = status;
+  }
+}
+
+export function isAuthError(e: unknown): e is AuthError {
+  return !!e && typeof e === 'object' && (e as { __auth?: boolean }).__auth === true;
+}
+
 function looksJson(body: string): boolean {
   const t = body.trimStart();
   return t.startsWith('{') || t.startsWith('[');
@@ -52,6 +70,7 @@ export async function fetchListing(
   const resp = (await fetch(url, { headers })) as Response & { status?: number; ok?: boolean };
   // Be tolerant of runtimes that don't expose `ok`; fall back to `status`.
   const status = typeof resp.status === 'number' ? resp.status : 200;
+  if (status === 401 || status === 403) throw new AuthError(status);
   if (resp.ok === false || status >= 400) return null;
   const body = await resp.text();
   // Parser primarily sniffs by body shape; content-type is just a hint.

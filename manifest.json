@@ -4,7 +4,7 @@
   "title": "Folder Downloader",
   "description": "Recursively resolve an HTTP directory listing (nginx/Apache/Caddy autoindex or a JSON listing) into a folder resource so Gopeed can download a whole folder tree at once, preserving its structure.",
   "icon": "icon.png",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage": "https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader",
   "repository": {
     "url": "https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader"
@@ -27,20 +27,6 @@
       "description": "User-Agent header used when crawling the listing and downloading files.",
       "type": "string",
       "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    },
-    {
-      "name": "username",
-      "title": "Username (HTTP basic auth)",
-      "description": "Optional. Used when the server requires login and the download URL has no credentials. Leave blank for public servers.",
-      "type": "string",
-      "value": ""
-    },
-    {
-      "name": "password",
-      "title": "Password (HTTP basic auth)",
-      "description": "Optional. Paired with Username. Note: stored in plain text in Gopeed's config.",
-      "type": "string",
-      "value": ""
     },
     {
       "name": "maxDepth",

@@ -28,10 +28,17 @@ so normal downloads are never hijacked.
 
 ## Key decisions
 
-- **Credentials → headers.** URL userinfo (`user:pass@host`) is stripped from all
-  stored URLs and re-sent as `Authorization: Basic` on every crawl fetch and every
-  file `req`. More reliable than hoping the engine honors URL userinfo; keeps creds
-  out of logs (see `redact()` in `crawler.ts`).
+- **Credentials live in the URL** (`https://user:pass@host/dir/`) — per-download,
+  since different sources have different logins (no global username/password
+  setting; that was tried in 1.0.3 and removed in 1.0.4). `splitCredentials` pulls
+  the userinfo and `buildHeaders` re-sends it as `Authorization: Basic` on every
+  crawl fetch and every file `req`. URLs are rebuilt without userinfo via
+  `stripUserinfo` (don't set `username=''`/`password=''` — the goja URL polyfill
+  leaves a stray `:@`), keeping creds out of the stored URLs and logs.
+- **Auth errors are surfaced, not swallowed.** A 401/403 on the root throws
+  `AuthError` (a tagged class, detected via `isAuthError`, not `instanceof` — that
+  breaks under the ES5 transpile), which `index.ts` turns into a `MessageError`
+  telling the user to use `https://user:pass@host/dir/`.
 - **Parser is anchor-based**, not table-shape-based — tolerates nginx/nginxy,
   Apache, Caddy, Python http.server, etc. Dirs = trailing `/` on href. Sizes are
   best-effort from text after the anchor (binary + decimal units).
@@ -82,10 +89,18 @@ accordingly:
 - The manifest `version` is the update signal — bumping it is what triggers
   Gopeed's "update available". Never ship a code change without bumping it.
 
+## Scope
+
+This is a **plain resolve-only extension**: paste a directory URL → get a
+selectable folder tree. That is the whole job. Persistent/stateful features —
+saved sources, skip-already-on-disk, sync — are deliberately NOT here, because the
+extension sandbox can't do them (no filesystem access; doesn't know the target dir
+at resolve time; can't control the native picker's selection/grey-out). Those live
+in a planned external companion app that drives Gopeed's REST API — see
+`COMPANION.md`. Do not try to add them to this extension.
+
 ## Caveats / known limits
 
 - Source must be a **browsable** listing (autoindex HTML or JSON index).
-- Native picker does **not** grey out already-downloaded / conflicting files —
-  Gopeed exposes no extension hook for that. Not a bug in this extension.
 - `dist/` is committed because the manifest `entry` references it; rebuild after
   editing `src/`.

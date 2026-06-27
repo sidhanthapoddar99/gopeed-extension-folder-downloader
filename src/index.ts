@@ -13,6 +13,7 @@
  */
 import { crawl } from './crawler';
 import { buildResource } from './tree';
+import { isAuthError } from './listing';
 import {
   ensureTrailingSlash,
   splitCredentials,
@@ -22,8 +23,6 @@ import {
 
 interface Config {
   userAgent?: string;
-  username?: string;
-  password?: string;
   maxDepth: number;
   concurrency: number;
   maxFiles: number;
@@ -40,8 +39,6 @@ function readConfig(): Config {
   const str = (v: unknown) => (typeof v === 'string' && v ? v : undefined);
   return {
     userAgent: str(s.userAgent),
-    username: str(s.username),
-    password: str(s.password),
     maxDepth: num(s.maxDepth, 50),
     concurrency: Math.max(1, num(s.concurrency, 5)),
     maxFiles: Math.max(1, num(s.maxFiles, 5000)),
@@ -65,12 +62,8 @@ gopeed.events.onResolve(async (ctx) => {
   const root = ensureTrailingSlash(url);
 
   const cfg = readConfig();
-  // Credentials embedded in the URL win; otherwise fall back to the
-  // Username/Password configured on the extension's settings page.
-  const fromUrl = splitCredentials(root);
-  const clean = fromUrl.clean;
-  const username = fromUrl.username || cfg.username || '';
-  const password = fromUrl.password || cfg.password || '';
+  // Credentials come from the URL itself (e.g. https://user:pass@host/path/).
+  const { clean, username, password } = splitCredentials(root);
   const headers = buildHeaders({
     userAgent: cfg.userAgent,
     username,
@@ -78,23 +71,32 @@ gopeed.events.onResolve(async (ctx) => {
     extra: cfg.extraHeaders,
   });
 
+  let files;
   try {
-    const files = await crawl(clean, {
+    files = await crawl(clean, {
       headers,
       maxDepth: cfg.maxDepth,
       concurrency: cfg.concurrency,
       maxFiles: cfg.maxFiles,
       log: (m) => gopeed.logger.debug(`[folder-downloader] ${m}`),
     });
-
-    if (files.length === 0) {
-      gopeed.logger.warn('[folder-downloader] no files found; leaving to default resolver');
-      return;
-    }
-
-    ctx.res = buildResource(clean, files, headers);
-    gopeed.logger.info(`[folder-downloader] resolved ${files.length} file(s) under "${ctx.res.name}"`);
   } catch (e) {
+    if (isAuthError(e)) {
+      // Surface a clear, actionable message instead of a silent failure.
+      throw new MessageError(
+        'This URL requires a login. Put your username and password in the URL like:\n' +
+          'https://username:password@host/path/'
+      );
+    }
     gopeed.logger.error('[folder-downloader] crawl failed; leaving to default resolver', e);
+    return;
   }
+
+  if (files.length === 0) {
+    gopeed.logger.warn('[folder-downloader] no files found; leaving to default resolver');
+    return;
+  }
+
+  ctx.res = buildResource(clean, files, headers);
+  gopeed.logger.info(`[folder-downloader] resolved ${files.length} file(s) under "${ctx.res.name}"`);
 });

@@ -2,7 +2,8 @@ import { expect, test, describe } from 'bun:test';
 import { parseHtmlAutoindex, parseSize } from '../src/listing/html-autoindex';
 import { parseJsonListing } from '../src/listing/json-listing';
 import { buildResource } from '../src/tree';
-import { relativeParts, splitCredentials, buildHeaders, ensureTrailingSlash } from '../src/url';
+import { relativeParts, splitCredentials, buildHeaders, ensureTrailingSlash, resolveUrl } from '../src/url';
+import { AuthError, isAuthError } from '../src/listing';
 
 const BASE = 'https://host.example/movies/';
 
@@ -96,10 +97,31 @@ describe('url helpers', () => {
     expect(h['Authorization']).toBe('Basic ' + btoa('u:p'));
   });
 
+  test('cleaned URLs never contain a stray ":@" userinfo', () => {
+    expect(splitCredentials('https://u:p@host.example/dir/').clean).not.toContain('@');
+    expect(resolveUrl('https://u:p@host.example/dir/', 'sub/file.bin')).toBe(
+      'https://host.example/dir/sub/file.bin'
+    );
+    // port is preserved, credentials are not
+    expect(splitCredentials('https://u:p@host.example:8443/d/').clean).toBe(
+      'https://host.example:8443/d/'
+    );
+  });
+
   test('relativeParts splits dir and name relative to root', () => {
     expect(
       relativeParts('https://host.example/movies/', 'https://host.example/movies/sub/a%20b.mkv')
     ).toEqual({ dir: 'sub', name: 'a b.mkv' });
+  });
+});
+
+describe('AuthError', () => {
+  test('is detectable across a plain catch (tagged, not instanceof)', () => {
+    const e: unknown = new AuthError(401);
+    expect(isAuthError(e)).toBe(true);
+    expect(isAuthError(new Error('nope'))).toBe(false);
+    expect(isAuthError(null)).toBe(false);
+    expect((e as AuthError).status).toBe(401);
   });
 });
 

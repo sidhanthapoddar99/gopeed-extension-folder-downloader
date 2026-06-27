@@ -71,6 +71,12 @@ Then in Gopeed → **Extensions** → **Install** → **Local path**, point at t
 3. Set the **Download Directory** as usual. Gopeed resolves the folder and shows
    the selectable file tree — pick what you want, then download.
 
+If the server needs a login, put the credentials in the URL itself
+(`https://username:password@host/dir/`). Each URL carries its own credentials, so
+you can mix authenticated and public sources freely. If you paste an
+authenticated URL without credentials, the extension returns a clear message
+telling you to add them in that form.
+
 ## What "root link" can point to
 
 - **HTML autoindex** — a browsable directory listing: nginx (incl. themed
@@ -102,9 +108,10 @@ and never leaks into logs or the task list.
 
 - The source must expose a **browsable listing** (autoindex HTML or a JSON
   index). A bare file host with directory browsing disabled can't be enumerated.
-- Already-downloaded / name-conflicting files are **not greyed out** in the
-  picker — Gopeed's native create-task tree doesn't expose that hook to
-  extensions. Gopeed's own duplicate handling applies on download.
+- The extension resolves on demand from the URL you paste. Persistent features —
+  **saved sources** (no re-pasting URLs), **skip files already on disk**, and
+  **sync** — are intentionally out of scope for an extension and are planned in a
+  separate companion app. See [COMPANION.md](./COMPANION.md).
 
 ## Development
 
