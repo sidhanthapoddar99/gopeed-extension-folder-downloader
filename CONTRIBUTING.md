@@ -10,22 +10,9 @@ bun run check      # typecheck + unit tests — run this before pushing
 bun run build      # bundle src/ → dist/index.js
 ```
 
-The repo uses **bun** as package manager and task runner, and **webpack + babel**
-to bundle to Gopeed's ES5.1 runtime (goja). Native `async/await` is kept; the rest
-of ES6+ is transpiled.
-
-## Project layout
-
-| Path | Purpose |
-|---|---|
-| `manifest.json` | Extension manifest (must stay at the repo root). |
-| `src/index.ts` | `onResolve` entry: settings → crawl → folder resource. |
-| `src/crawler.ts` | Recursive BFS crawl (depth / concurrency / cycle / cap). |
-| `src/tree.ts` | Crawled files → Gopeed `Resource`. |
-| `src/url.ts` | Credential split, scoping, relative-path & header helpers. |
-| `src/listing/` | Directory-listing parsers (HTML autoindex, JSON) + sniffing. |
-| `test/` | `bun:test` coverage. |
-| `dist/index.js` | Build artifact referenced by the manifest. |
+Toolchain, project layout, architecture, runtime constraints and the
+publishing/release process are documented in **[DEVELOPER.md](./DEVELOPER.md)** —
+read it before making a non-trivial change.
 
 ## Guidelines
 
