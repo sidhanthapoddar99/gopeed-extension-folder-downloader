@@ -40,12 +40,26 @@ Once installed, it appears under **Extensions → Installed**:
 
 ## How to use
 
+### What your source looks like
+
+A source is a **browsable directory listing** — folders and files shown as links,
+like the page below. Copy that page's URL (the one ending in `/`) from your
+browser's address bar; that's what you give to Gopeed.
+
+<img src="docs/screenshots/directory-listing.png" width="760" alt="A browsable HTTP directory listing of Sample-Media-Pack, showing folders and files with sizes">
+
 ### 1. Create a task and paste the folder URL
 
 Click **+** (Create Task), and in **Download Link** paste the directory URL — it
 **must end with a `/`** (the trailing slash is how the extension knows it's a
 folder; a URL without one downloads normally). Set the **Download Directory** as
 usual, then click **Confirm**.
+
+> **💡 Tip — resolve, don't "download directly."**
+> Let Gopeed **resolve** the link; don't choose **"Download directly"**. Direct
+> download saves the listing *page itself* as a single HTML file. The extension
+> only turns the URL into a folder tree on the **resolve** step (and only for
+> URLs ending in `/`).
 
 <img src="docs/screenshots/create-task.png" width="760" alt="Create Task dialog with a directory URL pasted into Download Link">
 
@@ -56,6 +70,12 @@ with sizes. Tick a folder to toggle all its files; expand folders to drill in.
 Click **Download** — files are saved preserving the folder structure.
 
 <img src="docs/screenshots/select-files.png" width="760" alt="File selection tree showing nested folders, sizes, and checkboxes">
+
+> **📁 Where your files land.**
+> Files are saved under **`<Download Directory>/<folder name>/…`**, mirroring the
+> listing's structure. With a Download Directory of `/app/Downloads` and the
+> `Sample-Media-Pack/` folder above, `Extras/trailer.mp4` lands at
+> `/app/Downloads/Sample-Media-Pack/Extras/trailer.mp4`.
 
 ### Authentication
 

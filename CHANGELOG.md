@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2026-06-27
+
+### Docs
+
+- Rewrote `README.md` as a screenshot-driven user guide (install, how-to-use,
+  authentication, settings, limitations) with a **Reporting bugs** section, and
+  moved the development/publishing reference into a new `DEVELOPER.md`.
+- Added screenshots, including a sample browsable directory listing, and callouts
+  to **resolve rather than "download directly"** and clarifying the
+  `<Download Directory>/<folder>/…` layout where files land.
+
+> No runtime/behaviour changes — version bumped so installed clients and the
+> store pick up the refreshed documentation.
+
 ## [1.0.4] - 2026-06-27
 
 ### Changed
@@ -76,6 +90,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   extra request headers.
 - Unit tests (`bun test`) for parsers, the tree builder and URL helpers.
 
+[1.0.5]: https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/releases/tag/v1.0.5
 [1.0.4]: https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/releases/tag/v1.0.4
 [1.0.3]: https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/releases/tag/v1.0.3
 [1.0.2]: https://github.com/sidhanthapoddar99/gopeed-extension-folder-downloader/releases/tag/v1.0.2
