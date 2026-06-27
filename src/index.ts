@@ -48,14 +48,16 @@ gopeed.events.onResolve(async (ctx) => {
   const url = ctx.req.url;
   if (!/^https?:\/\//i.test(url)) return;
 
-  // Only treat trailing-slash URLs as folders; everything else is a normal file.
-  let root: string;
+  // Only treat trailing-slash URLs as folders; everything else is a normal file
+  // and is left untouched for Gopeed's default resolver.
+  let parsed: URL;
   try {
-    root = ensureTrailingSlash(url);
-    if (!new URL(root).pathname.endsWith('/')) return;
+    parsed = new URL(url);
   } catch {
     return;
   }
+  if (!parsed.pathname.endsWith('/')) return;
+  const root = ensureTrailingSlash(url);
 
   const cfg = readConfig();
   const { clean, username, password } = splitCredentials(root);
